@@ -25,18 +25,19 @@ function writeUsers(users) {
     fs.writeFileSync(USERS_FILE, JSON.stringify(users, null, 2));
 }
 
-// Login Endpoint
 app.post('/login', (req, res) => {
     const { email, password } = req.body;
     const users = readUsers();
     const user = users.find((u) => u.email === email && u.password === password);
 
     if (user) {
-        res.json({ success: true });
+        // On successful login, send a success response with user data (you can send the email or name)
+        res.json({ success: true, name: user.name, email: user.email });
     } else {
         res.json({ success: false, message: 'Invalid email or password.' });
     }
 });
+
 
 // Signup Endpoint
 app.post('/signup', (req, res) => {
@@ -55,4 +56,16 @@ app.post('/signup', (req, res) => {
 // Start Server
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
+});
+// Get User Endpoint
+app.post('/get-user', (req, res) => {
+    const { email } = req.body;
+    const users = readUsers();
+    const user = users.find(u => u.email === email);
+
+    if (user) {
+        res.json({ success: true, name: user.name });
+    } else {
+        res.json({ success: false, message: 'User not found' });
+    }
 });
