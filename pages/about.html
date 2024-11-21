@@ -3,9 +3,42 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tribal Heritage Timeline - Dashboard</title>
+  <title>Bukidnon Tribal Heritage Timeline - About</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
   <link rel="stylesheet" href="../assets/css/dashboard.css">
+  <style>
+    /* Custom styles for the timeline */
+    .timeline {
+      list-style-type: none;
+      padding-left: 0;
+    }
+    .timeline-item {
+      position: relative;
+      margin-bottom: 2rem;
+    }
+    .timeline-item:before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 0;
+      height: 100%;
+      border-left: 2px solid #5b4a3f;
+      width: 0;
+      z-index: 1;
+    }
+    .timeline-item .timeline-content {
+      background-color: #f8f9fa;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      margin-left: 2rem;
+      position: relative;
+      z-index: 2;
+    }
+    .timeline-item .timeline-date {
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+  </style>
 </head>
 <body>
 
@@ -13,17 +46,17 @@
   <div id="sidebar" class="sidebar">
     <ul>
       <a href="dashboard.html">
-      <li class="active">Dashboard</li>
+        <li class="active">Dashboard</li>
       </a>
       <a href="activities.html">
-      <li>Activities</li>
+        <li>Activities</li>
       </a>
       <a href="about.html">
-      <li>About</li>
+        <li>About</li>
       </a>
       <a href="../index.html">
-      <li>Log out</li>
-    </a>
+        <li>Log out</li>
+      </a>
     </ul>
   </div>
 
@@ -35,20 +68,98 @@
         <button class="btn btn-dark" id="sidebarToggle">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <a class="navbar-brand ms-3" href="#">Tribal Heritage Timeline</a>
+        <a class="navbar-brand ms-3" href="#">Bukidnon Tribal Heritage Timeline</a>
         <div class="d-flex align-items-center">
           <span id="username">Default User</span>
         </div>
       </div>
     </nav>
 
-    <!-- Dashboard Content -->
+    <!-- About Content -->
     <div class="container mt-4">
+      <h2 class="mb-4">Bukidnon Tribal Heritage Timeline</h2>
 
-      
+      <!-- Timeline -->
+      <ul class="timeline">
+        <li class="timeline-item">
+          <div class="timeline-content">
+            <p class="timeline-date">Pre-16th Century</p>
+            <p>The Bukidnon tribes, such as the Talaandig, Manobo, and Higaonon, have lived in the highlands of Bukidnon for centuries, developing their unique language, culture, and traditional ways of life, including agriculture and hunting.</p>
+          </div>
+        </li>
+        <li class="timeline-item">
+          <div class="timeline-content">
+            <p class="timeline-date">16th Century - Spanish Colonial Era</p>
+            <p>During the Spanish colonial period, the Bukidnon tribes faced encroachment from foreign settlers. Despite this, they maintained their distinct cultural identity, with their traditional rituals and practices largely unchanged by external influences.</p>
+          </div>
+        </li>
+        <li class="timeline-item">
+          <div class="timeline-content">
+            <p class="timeline-date">19th Century - American Occupation</p>
+            <p>The arrival of American settlers introduced changes to the Bukidnon tribes' way of life, including the establishment of schools and the imposition of new governance systems. However, they retained their cultural practices and spiritual beliefs.</p>
+          </div>
+        </li>
+        <li class="timeline-item">
+          <div class="timeline-content">
+            <p class="timeline-date">20th Century - Modernization</p>
+            <p>The 20th century saw the rise of modernization, with infrastructure development, changes in agricultural practices, and external influences on local culture. Nevertheless, Bukidnon tribes have fiercely preserved their indigenous identity, with cultural preservation efforts continuing today.</p>
+          </div>
+        </li>
+      </ul>
+
+      <!-- Interactive Collapsible Section -->
+      <div class="accordion mt-4" id="heritageAccordion">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingOne">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+              Traditional Rituals & Beliefs
+            </button>
+          </h2>
+          <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#heritageAccordion">
+            <div class="accordion-body">
+              The Bukidnon tribes have rich spiritual traditions, such as rituals for healing, thanksgiving, and prayers for the spirits. The Kadalag-an and other ceremonial events are key to maintaining the bond between the people and their ancestors.
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingTwo">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+              Indigenous Art & Craftsmanship
+            </button>
+          </h2>
+          <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#heritageAccordion">
+            <div class="accordion-body">
+              The Bukidnon tribes are known for their intricate weaving, beadwork, and woodcraft. These crafts are not only beautiful but also serve as symbols of their cultural heritage and stories passed down through generations.
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingThree">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+              Language & Oral Tradition
+            </button>
+          </h2>
+          <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#heritageAccordion">
+            <div class="accordion-body">
+              The Bukidnon people speak their native languages, including Bukidnon and Higaonon. Oral traditions such as storytelling and song are vital to preserving their history, myths, and teachings.
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingFour">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+              Agriculture & Sustainable Practices
+            </button>
+          </h2>
+          <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#heritageAccordion">
+            <div class="accordion-body">
+              Bukidnon tribes have long practiced sustainable agriculture, growing rice, corn, and root crops, using traditional farming techniques that are deeply connected to their spiritual beliefs and respect for the environment.
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-
 
   <!-- JavaScript -->
   <script>
@@ -59,30 +170,8 @@
       mainContent.classList.toggle('collapsed');
     });
 
-    const activitiesContainer = document.getElementById('activities');
-    let activities = [];
-
-    // Simulate a logged-in user (In real cases, you would fetch this info from your server or session)
     const loggedInUsername = ""; // Replace this with your server-side username fetching logic
-
-    // Set the logged-in user's name in the navbar
     document.getElementById('username').textContent = loggedInUsername;
-
-    // Load activities from the JSON file
-    async function loadActivities() {
-      try {
-        const response = await fetch('../server/activities.json');
-        activities = await response.json();
-
-        activitiesContainer.innerHTML = '';
-        activities.forEach(activity => {
-          addActivityCard(activity);
-        });
-      } catch (error) {
-        console.error('Error loading activities:', error);
-      }
-    }
-
   </script>
 
   <!-- Bootstrap JS Bundle -->
