@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tribal Heritage Timeline - Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../assets/css/dashboard.css">
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <div id="sidebar" class="sidebar">
+    <ul>
+      <a href="dashboard.html">
+      <li class="active">Dashboard</li>
+      </a>
+      <a href="activities.html">
+      <li>Activities</li>
+      </a>
+      <a href="about.html">
+      <li>About</li>
+      </a>
+      <a href="../index.html">
+      <li>Log out</li>
+    </a>
+    </ul>
+  </div>
+
+  <!-- Main Content -->
+  <div class="content" id="mainContent">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #5b4a3f; padding: 20px; margin: -20px;">
+      <div class="container-fluid">
+        <button class="btn btn-dark" id="sidebarToggle">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand ms-3" href="#">Tribal Heritage Timeline</a>
+        <div class="d-flex align-items-center">
+          <span id="username">Default User</span>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Dashboard Content -->
+    <div class="container mt-4">
+
+      
+    </div>
+  </div>
+
+
+  <!-- JavaScript -->
+  <script>
+    document.getElementById('sidebarToggle').addEventListener('click', () => {
+      const sidebar = document.getElementById('sidebar');
+      const mainContent = document.getElementById('mainContent');
+      sidebar.classList.toggle('collapsed');
+      mainContent.classList.toggle('collapsed');
+    });
+
+    const activitiesContainer = document.getElementById('activities');
+    let activities = [];
+
+    // Simulate a logged-in user (In real cases, you would fetch this info from your server or session)
+    const loggedInUsername = ""; // Replace this with your server-side username fetching logic
+
+    // Set the logged-in user's name in the navbar
+    document.getElementById('username').textContent = loggedInUsername;
+
+    // Load activities from the JSON file
+    async function loadActivities() {
+      try {
+        const response = await fetch('../server/activities.json');
+        activities = await response.json();
+
+        activitiesContainer.innerHTML = '';
+        activities.forEach(activity => {
+          addActivityCard(activity);
+        });
+      } catch (error) {
+        console.error('Error loading activities:', error);
+      }
+    }
+
+  </script>
+
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
