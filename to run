@@ -1,0 +1,5 @@
+make sure to install "Node.js" @:https://nodejs.org/en
+cd server
+npm init -y
+npm install express
+node server.js
