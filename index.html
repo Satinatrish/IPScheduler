@@ -5,132 +5,75 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tribal Heritage Timeline</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f7f7f7;
-      color: #333;
-    }
-
-    header {
-      background-color: #5b4a3f;
-      color: #fff;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem;
-    }
-
-    header h1 {
-      margin: 0;
-    }
-
-    .login-button {
-      background-color: #fff;
-      color: #5b4a3f;
-      border: 2px solid #fff;
-      padding: 0.5rem 1rem;
-      text-decoration: none;
-      border-radius: 5px;
-      font-weight: bold;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .login-button:hover {
-      background-color: #f1f1f1;
-      color: #5b4a3f;
-      border-color: #f1f1f1;
-    }
-
-    .timeline-container {
-      max-width: 1200px;
-      margin: 2rem auto;
-      padding: 1rem;
-    }
-
-    .timeline-section {
-      margin-bottom: 2rem;
-      background: #fff;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    .timeline-section h2 {
-      background: #5b4a3f;
-      color: white;
-      padding: 1rem;
-      margin: 0;
-      border-radius: 8px 8px 0 0;
-    }
-
-    .activities {
-      padding: 1rem;
-    }
-
-    .activity {
-      display: flex;
-      justify-content: space-between;
-      padding: 0.5rem 0;
-      border-bottom: 1px solid #ddd;
-    }
-
-    .activity:last-child {
-      border-bottom: none;
-    }
-
-    .activity-date {
-      font-weight: bold;
-    }
-
-    .expand-button {
-      display: inline-block;
-      padding: 0.5rem 1rem;
-      margin: 1rem 0;
-      background: #5b4a3f;
-      color: white;
-      text-align: center;
-      cursor: pointer;
-      border: none;
-      border-radius: 5px;
-      font-size: 1rem;
-    }
-
-    .expand-button:hover {
-      background: #4a3a30;
-    }
-
-    .footer {
-      text-align: center;
-      padding: 1rem;
-      background-color: #333;
-      color: #fff;
-    }
-
-    @media (max-width: 768px) {
-      .activity {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      header {
-        flex-direction: column;
-        align-items: center;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="assets/css/index.css">
 </head>
+<style>
+  /* Style for the image banner */
+  #imageBanner {
+    display: flex;
+    width: 100%;
+    height: 300px;
+    overflow: hidden;
+    position: relative;
+    align-items: center;
+    background-color: #f8f9fa; /* Light background */
+  }
 
+  #imageBanner .image-container {
+    width: 60%;
+    height: 100%;
+    position: relative;
+  }
+
+  #imageBanner .text-container {
+    width: 40%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  #imageBanner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    transition: opacity 1s ease-in-out;
+  }
+
+  .hidden {
+    opacity: 0;
+  }
+
+  .text-container h5 {
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  .text-container p {
+    font-size: 16px;
+  }
+  .title h1{
+    text-align: center;
+    color: #5b4a3f;
+    font-size: 50px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+  }
+</style>
 <body>
   <header>
     <h1>Tribal Heritage Timeline</h1>
-    <a href="login.html" class="login-button">Login</a>
+    <div>
+      <a href="#" class="login-button" onclick="openModal('loginModal')">Login</a>
+      <a href="#" class="login-button" onclick="openModal('signupModal')">Sign Up</a>
+    </div>
   </header>
+<!-- Banner displaying random images with date and description -->
+<div id="imageBanner" class="mt-4" style="margin-top: 50px;"></div>
 
+<div class="title">
+  <h1>Tribal Heritage Timeline</h1>
+</div>
   <div class="timeline-container">
     <!-- KAAMULAN FESTIVAL -->
     <div class="timeline-section">
@@ -197,12 +140,117 @@
     <p>&copy; 2024 Tribal Heritage Timeline</p>
   </footer>
 
+  <!-- Login Modal -->
+<div id="loginModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('loginModal')">&times;</span>
+      <h2>Login</h2>
+      <form>
+        <label for="loginEmail">Email:</label>
+        <input type="email" id="loginEmail" name="email" required>
+        <label for="loginPassword">Password:</label>
+        <input type="password" id="loginPassword" name="password" required>
+        <button type="submit">Login</button>
+      </form>
+      <p style="margin-top: 1rem; text-align: center;">
+        Don't have an account? 
+        <a href="#" onclick="switchModal('loginModal', 'signupModal')">Sign Up</a>
+      </p>
+    </div>
+  </div>
+  
+  <!-- Sign Up Modal -->
+  <div id="signupModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('signupModal')">&times;</span>
+      <h2>Sign Up</h2>
+      <form>
+        <label for="signupName">Name:</label>
+        <input type="text" id="signupName" name="name" required>
+        <label for="signupEmail">Email:</label>
+        <input type="email" id="signupEmail" name="email" required>
+        <label for="signupPassword">Password:</label>
+        <input type="password" id="signupPassword" name="password" required>
+        <button type="submit">Sign Up</button>
+      </form>
+      <p style="margin-top: 1rem; text-align: center;">
+        Already have an account? 
+        <a href="#" onclick="switchModal('signupModal', 'loginModal')">Login</a>
+      </p>
+    </div>
+  </div>
   <script>
-    function toggleDetails(id) {
-      const section = document.getElementById(id);
-      section.style.display = section.style.display === 'none' ? 'block' : 'none';
-    }
+    document.addEventListener("DOMContentLoaded", function () {
+      const jsonPath = "server/activities.json"; // Path to the activities.json file
+      const banner = document.getElementById("imageBanner");
+      let activities = []; // Array to store activities
+      let intervalId; // Store the interval ID
+  
+      // Function to display an activity
+      function displayActivity(activity) {
+        // Clear existing content in the banner
+        banner.innerHTML = "";
+  
+        // Create the image and text elements
+        const textContainer = document.createElement("div");
+        textContainer.classList.add("text-container");
+        const title = document.createElement("h5");
+        title.textContent = activity.title;
+        const date = document.createElement("p");
+        date.textContent = activity.date;
+        const description = document.createElement("p");
+        description.textContent = activity.description;
+
+
+        const imageContainer = document.createElement("div");
+        imageContainer.classList.add("image-container");
+        const img = document.createElement("img");
+        img.src = activity.image;
+        img.alt = activity.title;
+  
+  
+        // Append elements
+        imageContainer.appendChild(img);
+        textContainer.appendChild(title);
+        textContainer.appendChild(date);
+        textContainer.appendChild(description);
+  
+        banner.appendChild(imageContainer);
+        banner.appendChild(textContainer);
+      }
+  
+      // Function to start rotating activities
+      function startRotation() {
+        intervalId = setInterval(() => {
+          const randomIndex = Math.floor(Math.random() * activities.length);
+          const randomActivity = activities[randomIndex];
+          displayActivity(randomActivity);
+        }, 2000);
+      }
+  
+      // Fetch activities.json and start rotation
+      fetch(jsonPath)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then((data) => {
+          activities = data;
+          if (activities.length === 0) {
+            console.error("No activities found in the JSON file.");
+            return;
+          }
+          startRotation(); // Start displaying activities
+        })
+        .catch((error) => console.error("Error fetching activities.json:", error));
+    });
   </script>
+  
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/index.js"></script>
 </body>
 
 </html>

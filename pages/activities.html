@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tribal Heritage Timeline - Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../assets/css/dashboard.css">
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <div id="sidebar" class="sidebar">
+    <ul>
+      <a href="dashboard.html">
+      <li>Dashboard</li>
+      </a>
+      <a href="activities.html">
+      <li class="active">Activities</li>
+      </a>
+      <a href="about.html">
+      <li>About</li>
+      </a>
+      <a href="../index.html">
+      <li>Log out</li>
+    </a>
+    </ul>
+  </div>
+
+  <!-- Main Content -->
+  <div class="content" id="mainContent">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #5b4a3f; padding: 20px; margin: -20px;">
+        <div class="container-fluid">
+          <button class="btn btn-dark" id="sidebarToggle">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <a class="navbar-brand ms-3" href="#">Tribal Heritage Timeline</a>
+          <div class="d-flex align-items-center">
+            <span id="username">Default User</span>
+          </div>
+        </div>
+      </nav>
+
+    <!-- Dashboard Content -->
+    <div class="container mt-4">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Activities</h1>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addActivityModal">Add Activity</button>
+      </div>
+
+      <!-- Search Bar -->
+      <div class="mb-4">
+        <input type="text" id="searchBar" class="form-control" placeholder="Search activities..." onkeyup="searchActivities()">
+      </div>
+
+      <div id="activities" class="row g-4" style="margin-bottom: 60px;">
+        <!-- Dynamic activity cards will be injected here -->
+      </div>
+      <footer class="footer" style="padding: 20px; margin: -35px;">
+        <p>&copy; 2024 Tribal Heritage Timeline</p>
+      </footer>
+    </div>
+  </div>
+
+  <!-- Add Activity Modal -->
+  <div class="modal fade" id="addActivityModal" tabindex="-1" aria-labelledby="addActivityModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addActivityModalLabel">Add Activity</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="addActivityForm">
+            <div class="mb-3">
+              <label for="title" class="form-label">Title</label>
+              <input type="text" class="form-control" id="title" required>
+            </div>
+            <div class="mb-3">
+              <label for="date" class="form-label">Date</label>
+              <input type="date" class="form-control" id="date" required>
+            </div>
+            <div class="mb-3">
+              <label for="description" class="form-label">Description</label>
+              <textarea class="form-control" id="description" rows="3" required></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="image" class="form-label">Image URL</label>
+              <input type="url" class="form-control" id="image" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Add</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    document.getElementById('sidebarToggle').addEventListener('click', () => {
+      const sidebar = document.getElementById('sidebar');
+      const mainContent = document.getElementById('mainContent');
+      sidebar.classList.toggle('collapsed');
+      mainContent.classList.toggle('collapsed');
+    });
+
+    const activitiesContainer = document.getElementById('activities');
+    let activities = [];
+
+    // Simulate a logged-in user (In real cases, you would fetch this info from your server or session)
+    const loggedInUsername = ""; // Replace this with your server-side username fetching logic
+
+    // Set the logged-in user's name in the navbar
+    document.getElementById('username').textContent = loggedInUsername;
+
+    // Load activities from the JSON file
+    async function loadActivities() {
+      try {
+        const response = await fetch('../server/activities.json');
+        activities = await response.json();
+
+        activitiesContainer.innerHTML = '';
+        activities.forEach(activity => {
+          addActivityCard(activity);
+        });
+      } catch (error) {
+        console.error('Error loading activities:', error);
+      }
+    }
+
+    // Add a new activity card to the dashboard
+    function addActivityCard(activity) {
+      const card = document.createElement('div');
+      card.className = 'col-md-4';
+      card.innerHTML = `
+        <div class="card h-100">
+          <img src="${activity.image}" class="card-img-top" alt="${activity.title}">
+          <div class="card-body">
+            <h5 class="card-title">${activity.title}</h5>
+            <p class="text-muted">${activity.date}</p>
+            <p class="card-text">${activity.description}</p>
+          </div>
+        </div>
+      `;
+      activitiesContainer.appendChild(card);
+    }
+
+    // Handle adding new activity
+    document.getElementById('addActivityForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const title = document.getElementById('title').value;
+      const date = document.getElementById('date').value;
+      const description = document.getElementById('description').value;
+      const image = document.getElementById('image').value;
+
+      const newActivity = { title, date, description, image };
+
+      // Here we can send this new activity to a server, but for now we just log it
+      console.log(newActivity);
+
+      // Add the new activity card dynamically
+      addActivityCard(newActivity);
+
+      // Reset the form
+      document.getElementById('addActivityForm').reset();
+      const modal = bootstrap.Modal.getInstance(document.getElementById('addActivityModal'));
+      modal.hide();
+    });
+
+    // Search activities by title
+    function searchActivities() {
+      const searchTerm = document.getElementById('searchBar').value.toLowerCase();
+      const filteredActivities = activities.filter(activity => {
+        return activity.title.toLowerCase().includes(searchTerm);
+      });
+
+      activitiesContainer.innerHTML = '';
+      filteredActivities.forEach(activity => {
+        addActivityCard(activity);
+      });
+    }
+
+    // Load activities on page load
+    window.onload = loadActivities;
+
+
+
+    document.getElementById('addActivityForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const title = document.getElementById('title').value;
+  const date = document.getElementById('date').value;
+  const description = document.getElementById('description').value;
+  const image = document.getElementById('image').value;
+
+  const newActivity = { title, date, description, image };
+
+  try {
+    const response = await fetch('../server/save_activity.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newActivity),
+    });
+
+    const result = await response.json();
+    if (result.success) {
+      // Add the new activity to the UI
+      addActivityCard(newActivity);
+
+      // Reset the form and close the modal
+      document.getElementById('addActivityForm').reset();
+      const modal = bootstrap.Modal.getInstance(document.getElementById('addActivityModal'));
+      modal.hide();
+    } else {
+      console.error(result.message);
+    }
+  } catch (error) {
+    console.error('Error saving activity:', error);
+  }
+});
+
+  </script>
+
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

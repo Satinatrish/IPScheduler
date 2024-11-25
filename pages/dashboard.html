@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tribal Heritage Timeline - Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../assets/css/dashboard.css">
+  <style>
+    /* Style for the image banner */
+    #imageBanner {
+      display: flex;
+      width: 100%;
+      height: 300px;
+      overflow: hidden;
+      position: relative;
+      align-items: center;
+      background-color: #f8f9fa; /* Light background */
+    }
+
+    #imageBanner .image-container {
+      width: 60%;
+      height: 100%;
+      position: relative;
+    }
+
+    #imageBanner .text-container {
+      width: 40%;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    #imageBanner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      transition: opacity 1s ease-in-out;
+    }
+
+    .hidden {
+      opacity: 0;
+    }
+
+    .text-container h5 {
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .text-container p {
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <div id="sidebar" class="sidebar">
+    <ul>
+      <a href="dashboard.html">
+        <li class="active">Dashboard</li>
+      </a>
+      <a href="activities.html">
+        <li>Activities</li>
+      </a>
+      <a href="about.html">
+        <li>About</li>
+      </a>
+      <a href="../index.html">
+        <li>Log out</li>
+      </a>
+    </ul>
+  </div>
+
+  <!-- Main Content -->
+  <div class="content" id="mainContent">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #5b4a3f; padding: 20px; margin: -20px;">
+      <div class="container-fluid">
+        <button class="btn btn-dark" id="sidebarToggle">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand ms-3" href="#">Tribal Heritage Timeline</a>
+        <div class="d-flex align-items-center">
+          <span id="username">Default User</span>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Banner displaying random images with date and description -->
+    <div id="imageBanner" class="mt-4"></div>
+
+    <!-- Dashboard Content -->
+    <div class="container mt-4">
+      <div class="row" id="activities">
+        <!-- Activity Cards will be inserted here -->
+      </div>
+    </div>
+    <footer class="footer" style="padding: 20px; margin: -20px;">
+      <p>&copy; 2024 Tribal Heritage Timeline</p>
+    </footer>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    document.getElementById('sidebarToggle').addEventListener('click', () => {
+      const sidebar = document.getElementById('sidebar');
+      const mainContent = document.getElementById('mainContent');
+      sidebar.classList.toggle('collapsed');
+      mainContent.classList.toggle('collapsed');
+    });
+
+    const activitiesContainer = document.getElementById('activities');
+    const imageBanner = document.getElementById('imageBanner');
+    let activities = [];
+    let bannerImages = [];
+
+    // Simulate a logged-in user (In real cases, you would fetch this info from your server or session)
+    const loggedInUsername = ""; // Replace with server-side username fetching logic
+
+    // Set the logged-in user's name in the navbar
+    document.getElementById('username').textContent = loggedInUsername;
+
+    // Load activities from a JSON file
+    async function loadActivities() {
+      try {
+        const response = await fetch('../server/activities.json');  // Path to activities.json on your server
+        activities = await response.json();
+
+        activitiesContainer.innerHTML = '';
+        activities.forEach(activity => {
+          addActivityCard(activity);
+          bannerImages.push(activity);  // Store the full activity object for the banner (includes image, title, date, description)
+        });
+
+        // Start the image banner scroll
+        startImageBanner();
+      } catch (error) {
+        console.error('Error loading activities:', error);
+      }
+    }
+
+    // Function to add an activity card
+    function addActivityCard(activity) {
+      const cardHTML = `
+        <div class="col-md-4 mb-4">
+          <div class="card">
+            <img src="${activity.image}" class="card-img-top" alt="${activity.title}">
+            <div class="card-body">
+              <h5 class="card-title">${activity.title}</h5>
+              <p class="text-muted">${activity.date}</p>
+              <p class="card-text">${activity.description}</p>
+              <a href="${activity.image}" target="_blank" class="btn btn-primary">View Image</a>
+            </div>
+          </div>
+        </div>
+      `;
+      activitiesContainer.innerHTML += cardHTML;
+    }
+
+    // Function to start the image banner scroll
+    function startImageBanner() {
+      let currentImageIndex = 0;
+
+      setInterval(() => {
+        const images = imageBanner.getElementsByClassName('image-container');
+        const texts = imageBanner.getElementsByClassName('text-container');
+
+        if (images.length > 0) {
+          images[0].classList.add('hidden');  // Hide the current image
+          texts[0].classList.add('hidden');  // Hide the current text
+        }
+
+        currentImageIndex = (currentImageIndex + 1) % bannerImages.length;
+        const activity = bannerImages[currentImageIndex];
+
+        // Create the new image and text containers
+        const imageContainer = document.createElement('div');
+        imageContainer.classList.add('image-container');
+        const img = document.createElement('img');
+        img.src = activity.image;
+        imageContainer.appendChild(img);
+
+        const textContainer = document.createElement('div');
+        textContainer.classList.add('text-container');
+        const title = document.createElement('h5');
+        title.textContent = activity.title;
+        const date = document.createElement('p');
+        date.textContent = activity.date;
+        const description = document.createElement('p');
+        description.textContent = activity.description;
+        textContainer.appendChild(title);
+        textContainer.appendChild(date);
+        textContainer.appendChild(description);
+
+        // Append the new containers to the banner
+        imageBanner.appendChild(textContainer);
+        imageBanner.appendChild(imageContainer);
+
+        // After the image is added, remove the previous ones
+        if (images.length > 1) {
+          imageBanner.removeChild(images[0]);
+          imageBanner.removeChild(texts[0]);
+        }
+      }, 2000); // 2 seconds interval
+    }
+
+    // Call the loadActivities function when the page is loaded
+    window.onload = loadActivities;
+
+  </script>
+
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
